@@ -11,10 +11,18 @@
     <script>
         const container = document.querySelector(".container");
         const button = document.createElement("button");
+        const btnContainer = document.createElement("div");
 
-        container.appendChild(button);
+        btnContainer.appendChild(button);
         button.textContent = "Create Grid"
-        button.style.cssText = "background-color: black; color: white; border-radius: 5px; margin: 25px; padding: 8px; font-size: 18px;";
+        button.style.cssText = "background-color: black; color: white; border-radius: 5px; flex: 1; font-size: 18px;";
+        const resetBtn = document.createElement("button");
+        resetBtn.textContent = "Reset";
+        resetBtn.style.cssText = "background-color: black; color: white; border-radius: 5px; flex: 1; font-size: 18px;"
+        btnContainer.appendChild(resetBtn)
+        container.appendChild(btnContainer)
+
+        btnContainer.style.cssText = "display: flex; flex: 1; gap: 10px; margin: 10px;"
 
         function createGrid(size) {
 
@@ -33,20 +41,27 @@
 
         function getRandomColor() {
             const colors = ["red", "blue", "green", "pink", "yellow", "black", "gray"];
-            const index = Math.floor(Math.random() * colors.length) + 1;
+            const index = Math.floor(Math.random() * colors.length);
             return colors[index];
 
         }
 
         container.addEventListener("mouseover", (e) => {
-            if(e.target.classList.contains("square") || e.target.classList.contains("row")) {
-                e.target.style.backgroundColor = getRandomColor();
+            if(e.target.classList.contains("square")) {
+                if(!e.target.dataset.color) {
+                    e.target.dataset.color = getRandomColor();
+                }
+                e.target.style.backgroundColor = e.target.dataset.color;
+
+                let opacity = parseFloat(e.target.style.opacity) || 0;
+                opacity = Math.min(opacity + 0.1, 1);
+                e.target.style.opacity = opacity;
             }
         })
 
         button.addEventListener("click", () => {
             container.innerHTML = "";
-            container.appendChild(button)
+            container.appendChild(btnContainer)
             const size = prompt("How big should the grid be?");
             if(size > 100) {
                 const newSize = prompt("Too big pick between 2 and 100");
@@ -54,6 +69,15 @@
             } else {
                 createGrid(size);
             }
+        })
+
+        resetBtn.addEventListener("click", () => {
+            const squares = document.querySelectorAll(".square");
+            squares.forEach((square) => {
+                square.style.backgroundColor = "";
+                square.style.opacity = "";
+                delete square.dataset.color;
+            })
         })
 
         createGrid(16);
