@@ -45,7 +45,12 @@
             container.innerHTML = "";
             container.appendChild(button)
             const size = prompt("How big should the grid be?");
-            createGrid(size);
+            if(size > 100) {
+                const newSize = prompt("Too big pick between 2 and 100");
+                createGrid(newSize);
+            } else {
+                createGrid(size);
+            }
         })
 
         createGrid(16);
