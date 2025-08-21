@@ -32,12 +32,15 @@
         }
 
         function getRandomColor() {
-            const colors = ["red", "blue", "green", "pink", "yellow", "black", "gray"]
+            const colors = ["red", "blue", "green", "pink", "yellow", "black", "gray"];
+            const index = Math.floor(Math.random() * colors.length) + 1;
+            return colors[index];
+
         }
 
         container.addEventListener("mouseover", (e) => {
             if(e.target.classList.contains("square") || e.target.classList.contains("row")) {
-                e.target.classList.add("black")
+                e.target.style.backgroundColor = getRandomColor();
             }
         })
 
@@ -55,7 +58,6 @@
 
         createGrid(16);
 
-        
     </script>
 </body>
 </html>
